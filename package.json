@@ -12,6 +12,7 @@
     "@mikro-orm/core": "^5.4.2",
     "@mikro-orm/migrations": "^5.4.2",
     "@mikro-orm/postgresql": "^5.4.2",
+    "argon2": "^0.30.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "reflect-metadata": "^0.1.13",

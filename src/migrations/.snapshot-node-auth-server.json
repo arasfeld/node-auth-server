@@ -43,6 +43,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "string"
+        },
+        "password_hash": {
+          "name": "password_hash",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         }
       },
       "name": "user",

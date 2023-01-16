@@ -6,4 +6,7 @@ export class User extends Base<User> {
   @Property()
   @Unique()
   public username!: string
+
+  @Property()
+  public passwordHash!: string
 }
