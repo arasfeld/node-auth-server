@@ -2,8 +2,9 @@ import 'dotenv/config'
 import 'reflect-metadata'
 import { MikroORM, RequestContext } from '@mikro-orm/core'
 import express from 'express'
-import routes from './controllers'
+import * as middleware from './middleware'
 import mikroOrmConfig from './mikro-orm.config'
+import routes from './routes'
 
 async function main() {
   const app = express()
@@ -12,7 +13,10 @@ async function main() {
   
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
-  
+
+  middleware.installSession(app)
+  middleware.installPassport(app)
+
   app.use((_req, _res, next) => RequestContext.create(orm.em, next))
 
   app.use(routes)

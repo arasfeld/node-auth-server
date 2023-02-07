@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { loginRouter } from './login-controller'
-import { registrationRouter } from './registration-controller'
+import { loginRouter } from './login-routes'
+import { registrationRouter } from './registration-routes'
 
 const router = Router()
 

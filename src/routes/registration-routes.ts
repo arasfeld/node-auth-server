@@ -1,12 +1,12 @@
 import { RequestContext } from '@mikro-orm/core'
-import { Request, Response, Router } from 'express'
+import { Router } from 'express'
 import { AppError } from '../error'
-import { LoginService } from '../services'
+import { RegistrationService } from '../services'
 
-export const loginRouter = Router()
+export const registrationRouter = Router()
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-loginRouter.post('/login', async (req: Request, res: Response) => {
+registrationRouter.post('/register', async (req, res) => {
   const { username, password } = req.query
 
   if (typeof(username) !== 'string') {
@@ -21,10 +21,10 @@ loginRouter.post('/login', async (req: Request, res: Response) => {
     const em = RequestContext.getEntityManager()
     if (!em) return res.status(500).end()
   
-    const service = new LoginService(em)
-    const user = await service.login(username, password)
+    const service = new RegistrationService(em)
+    const user = await service.register(username, password)
   
-    return res.status(200).json(user)
+    return res.status(201).json(user)
   } catch (error) {
     if (error instanceof AppError) {
       return res.status(error.statusCode).json({ message: error.message })
