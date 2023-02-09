@@ -1,33 +1,20 @@
 import 'dotenv/config'
-import 'reflect-metadata'
-import { MikroORM, RequestContext } from '@mikro-orm/core'
 import express from 'express'
 import * as middleware from './middleware'
-import mikroOrmConfig from './mikro-orm.config'
 import routes from './routes'
 
-async function main() {
-  const app = express()
-  const port = parseInt(process.env.PORT || '', 10) || 3000
-  const orm = await MikroORM.init(mikroOrmConfig)
-  
-  app.use(express.json())
-  app.use(express.urlencoded({ extended: true }))
+const app = express()
+const port = parseInt(process.env.PORT || '', 10) || 3000
 
-  middleware.installSession(app)
-  middleware.installPassport(app)
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
-  app.use((_req, _res, next) => RequestContext.create(orm.em, next))
+middleware.installPostgres(app)
+middleware.installSession(app)
+middleware.installPassport(app)
 
-  app.use(routes)
-  
-  app.listen(port, () => {
-    console.log(`🚀 Server ready at http://localhost:${port}`)
-  })
-}
+app.use(routes)
 
-main().catch((e: Error) => {
-  console.error('Fatal error occurred starting server!')
-  console.error(e)
-  process.exit(101)
+app.listen(port, () => {
+  console.log(`🚀 Server ready at http://localhost:${port}`)
 })

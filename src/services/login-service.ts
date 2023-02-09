@@ -1,15 +1,16 @@
-import { Connection, EntityManager, IDatabaseDriver } from '@mikro-orm/core'
 import argon2 from 'argon2'
-import { User } from '../entities/user'
+import { Pool } from 'pg'
 import { AppError } from '../error'
+import { User } from '../types'
 
 export class LoginService {
-  constructor(private readonly em: EntityManager<IDatabaseDriver<Connection>>) {}
+  constructor(private readonly pgPool: Pool) {}
 
   async login(username: string, password: string): Promise<User> {
-    const user = await this.em
-      .getRepository(User)
-      .findOne({ username: username.toLocaleLowerCase() })
+    const { rows: [user] } = await this.pgPool.query<User>(
+      'select id, username, password_hash as "passwordHash" from users where username = $1',
+      [username.toLocaleLowerCase()]
+    )
 
     if (!user || !await argon2.verify(user.passwordHash, password)) {
       throw new AppError(401, 'the username or password you entered is invalid')

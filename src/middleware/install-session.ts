@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import connectPgSimple from 'connect-pg-simple'
-import type { Express } from 'express'
+import type { Application } from 'express'
 import session from 'express-session'
+import { getPgPool } from './install-postgres'
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 const PgStore = connectPgSimple(session)
 
 const { SESSION_SECRET } = process.env
@@ -16,7 +15,13 @@ const HOUR = 60 * MINUTE;
 const DAY = 24 * HOUR;
 const MAXIMUM_SESSION_DURATION_IN_MILLISECONDS = 3 * DAY
 
-export default (app: Express) => {
+export default (app: Application) => {
+  const pgPool = getPgPool(app)
+  const store = new PgStore({
+    pool: pgPool,
+    tableName: 'sessions',
+  })
+
   app.use(
     session({
       rolling: true,
@@ -28,8 +33,7 @@ export default (app: Express) => {
         sameSite: 'lax', // Cannot be 'strict' otherwise OAuth won't work.
         secure: 'auto', // May need to app.set('trust proxy') for this to work.
       },
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      store: new PgStore(),
+      store,
       secret: SESSION_SECRET,
     })
   )

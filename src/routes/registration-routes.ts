@@ -1,6 +1,6 @@
-import { RequestContext } from '@mikro-orm/core'
 import { Router } from 'express'
 import { AppError } from '../error'
+import { getPgPool } from '../middleware/install-postgres'
 import { RegistrationService } from '../services'
 
 export const registrationRouter = Router()
@@ -18,10 +18,8 @@ registrationRouter.post('/register', async (req, res) => {
   }
 
   try {
-    const em = RequestContext.getEntityManager()
-    if (!em) return res.status(500).end()
-  
-    const service = new RegistrationService(em)
+    const pgPool = getPgPool(req.app)
+    const service = new RegistrationService(pgPool)
     const user = await service.register(username, password)
   
     return res.status(201).json(user)
