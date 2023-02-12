@@ -13,7 +13,8 @@ declare global {
   }
 }
 
-export default (app: Application) => {
+// eslint-disable-next-line @typescript-eslint/require-await
+export default async (app: Application) => {
   app.use(passport.initialize())
   app.use(passport.session())
 

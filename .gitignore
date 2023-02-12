@@ -105,3 +105,6 @@ dist
 
 # Docker Postgres volume
 pgdata
+
+# Docker Redis volume
+redisdata

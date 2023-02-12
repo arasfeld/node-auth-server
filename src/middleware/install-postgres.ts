@@ -5,7 +5,8 @@ export const getPgPool = (app: Application): Pool => {
   return app.get('pgPool') as Pool
 }
 
-export default (app: Application) => {
+// eslint-disable-next-line @typescript-eslint/require-await
+export default async (app: Application) => {
   const pgPool = new Pool({
     host: process.env.POSTGRES_HOST || 'localhost',
     port: parseInt(process.env.POSTGRES_PORT || '5432', 10),
