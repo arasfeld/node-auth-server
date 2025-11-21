@@ -7,7 +7,7 @@ export const registrationRouter = Router()
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 registrationRouter.post('/register', async (req, res) => {
-  const { username, password } = req.query
+  const { username, password } = req.body
 
   if (typeof(username) !== 'string') {
     return res.status(400).json({ message: 'username is missing' })
