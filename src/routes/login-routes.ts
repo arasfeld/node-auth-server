@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import passport from 'passport';
-import { authLimiter } from '../middleware/install-rate-limit';
+import { authLimiter } from '../middleware';
 
 export const loginRouter = Router();
 

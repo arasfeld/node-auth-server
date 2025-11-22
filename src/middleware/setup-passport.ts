@@ -2,7 +2,7 @@ import type { Application } from 'express';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { LoginService } from '../services';
-import { getPgPool } from './install-postgres';
+import { getPgPool } from './setup-postgres';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

@@ -3,7 +3,7 @@ import { RedisStore } from 'connect-redis';
 import type { Application } from 'express';
 import session, { MemoryStore } from 'express-session';
 import { createClient } from 'redis';
-import { getPgPool } from './install-postgres';
+import { getPgPool } from './setup-postgres';
 
 const PgStore = connectPgSimple(session);
 

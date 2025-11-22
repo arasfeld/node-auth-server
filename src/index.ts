@@ -12,11 +12,8 @@ async function main() {
   app.use(express.urlencoded({ extended: true }));
   app.use(helmet());
 
-  middleware.installCors(app);
-  middleware.installRateLimit(app);
-  await middleware.installPostgres(app);
-  await middleware.installSession(app);
-  await middleware.installPassport(app);
+  // Setup all middleware in correct order
+  await middleware.setupMiddleware(app);
 
   app.use(routes);
 

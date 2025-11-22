@@ -1,21 +1,23 @@
 import { Router } from 'express';
 import { AppError } from '../error';
-import { getPgPool } from '../middleware/install-postgres';
-import { authLimiter } from '../middleware/install-rate-limit';
+import { authLimiter, getPgPool } from '../middleware';
 import { RegistrationService } from '../services';
+import { registrationSchema } from '../validation';
 
 export const registrationRouter = Router();
 
 registrationRouter.post('/register', authLimiter, async (req, res) => {
-  const { username, password } = req.body;
+  // Validate input with zod
+  const validationResult = registrationSchema.safeParse(req.body);
 
-  if (typeof username !== 'string') {
-    return res.status(400).json({ message: 'username is missing' });
+  if (!validationResult.success) {
+    const firstError = validationResult.error.issues[0];
+    return res
+      .status(400)
+      .json({ message: firstError?.message || 'Invalid input' });
   }
 
-  if (typeof password !== 'string') {
-    return res.status(400).json({ message: 'password is missing' });
-  }
+  const { username, password } = validationResult.data;
 
   try {
     const pgPool = getPgPool(req.app);
