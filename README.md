@@ -16,7 +16,7 @@ A secure authentication server built with Node.js, Express, TypeScript, PostgreS
 - Node.js (v18 or higher)
 - PostgreSQL (v14 or higher)
 - Redis (optional, for session storage)
-- Yarn or npm
+- npm
 
 ## Quick Start
 
@@ -30,8 +30,6 @@ cd node-auth-server
 ### 2. Install dependencies
 
 ```bash
-yarn install
-# or
 npm install
 ```
 
@@ -61,16 +59,12 @@ This starts PostgreSQL and Redis containers.
 ### 5. Run database migrations
 
 ```bash
-yarn migrate up
-# or
 npx node-pg-migrate up
 ```
 
 ### 6. Start the development server
 
 ```bash
-yarn dev
-# or
 npm run dev
 ```
 
@@ -81,7 +75,7 @@ The server will start at `http://localhost:3000` (or your configured PORT).
 ### Build
 
 ```bash
-yarn build
+npm run build
 ```
 
 This compiles TypeScript to JavaScript in the `dist/` directory.
@@ -89,13 +83,13 @@ This compiles TypeScript to JavaScript in the `dist/` directory.
 ### Run in production mode
 
 ```bash
-yarn start
+npm start
 ```
 
 ### Linting
 
 ```bash
-yarn lint
+npm run lint
 # or
 npx eslint . --ext .ts
 ```
