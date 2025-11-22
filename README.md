@@ -42,6 +42,7 @@ cp .env.example .env
 ```
 
 Edit `.env` and set your values:
+
 - Generate a secure `SESSION_SECRET`: `openssl rand -base64 32`
 - Configure PostgreSQL credentials
 - (Optional) Configure Redis connection
@@ -111,6 +112,7 @@ Content-Type: application/json
 ```
 
 **Response:** `201 Created`
+
 ```json
 {
   "id": "uuid",
@@ -146,6 +148,7 @@ GET /me
 ```
 
 **Response:** `200 OK`
+
 ```json
 {
   "id": "uuid"
@@ -153,6 +156,7 @@ GET /me
 ```
 
 **Response:** `401 Unauthorized` (if not authenticated)
+
 ```json
 {
   "message": "authentication required"
@@ -172,6 +176,7 @@ GET /me
 ```
 
 Username requirements:
+
 - 2-24 characters
 - Must start with a letter
 - Can contain letters, numbers, and underscores
@@ -183,18 +188,18 @@ Used by `connect-pg-simple` for session storage when Redis is not configured.
 
 ## Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `PORT` | No | `3000` | Server port |
-| `NODE_ENV` | No | `development` | Environment mode |
-| `SESSION_SECRET` | **Yes** | - | Secret for session encryption |
-| `POSTGRES_DB` | No | `node-auth-server` | PostgreSQL database name |
-| `POSTGRES_HOST` | No | `localhost` | PostgreSQL host |
-| `POSTGRES_PORT` | No | `5432` | PostgreSQL port |
-| `POSTGRES_USER` | No | `postgres` | PostgreSQL username |
-| `POSTGRES_PASSWORD` | No | `password` | PostgreSQL password |
-| `REDIS_URL` | No | - | Redis connection URL (optional) |
-| `REDIS_PASSWORD` | No | - | Redis password (if required) |
+| Variable            | Required | Default            | Description                     |
+| ------------------- | -------- | ------------------ | ------------------------------- |
+| `PORT`              | No       | `3000`             | Server port                     |
+| `NODE_ENV`          | No       | `development`      | Environment mode                |
+| `SESSION_SECRET`    | **Yes**  | -                  | Secret for session encryption   |
+| `POSTGRES_DB`       | No       | `node-auth-server` | PostgreSQL database name        |
+| `POSTGRES_HOST`     | No       | `localhost`        | PostgreSQL host                 |
+| `POSTGRES_PORT`     | No       | `5432`             | PostgreSQL port                 |
+| `POSTGRES_USER`     | No       | `postgres`         | PostgreSQL username             |
+| `POSTGRES_PASSWORD` | No       | `password`         | PostgreSQL password             |
+| `REDIS_URL`         | No       | -                  | Redis connection URL (optional) |
+| `REDIS_PASSWORD`    | No       | -                  | Redis password (if required)    |
 
 ## Session Storage
 
@@ -259,4 +264,3 @@ MIT
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
