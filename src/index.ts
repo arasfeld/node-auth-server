@@ -17,6 +17,12 @@ async function main() {
 
   app.use(routes);
 
+  // 404 handler for unmatched routes (must be after all routes)
+  app.use(middleware.notFoundHandler);
+
+  // Global error handler (must be last)
+  app.use(middleware.errorHandler);
+
   app.listen(port, () => {
     console.log(`🚀 Server ready at http://localhost:${port}`);
   });

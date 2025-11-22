@@ -1,6 +1,6 @@
 import argon2 from 'argon2';
 import { Pool } from 'pg';
-import { AppError } from '../error';
+import { ConflictError, InternalServerError, ErrorCode } from '../error';
 import { User } from '../types';
 
 export class RegistrationService {
@@ -15,7 +15,10 @@ export class RegistrationService {
     );
 
     if (existingUser) {
-      throw new AppError(401, 'username is taken');
+      throw new ConflictError('username is taken', ErrorCode.USERNAME_TAKEN, {
+        field: 'username',
+        value: username.toLowerCase(),
+      });
     }
 
     const passwordHash = await argon2.hash(password);
@@ -30,7 +33,10 @@ export class RegistrationService {
     );
 
     if (!user) {
-      throw new AppError(500, 'failed to create user');
+      throw new InternalServerError('failed to create user', {
+        code: ErrorCode.USER_CREATION_FAILED,
+        username: username.toLowerCase(),
+      });
     }
 
     return user;

@@ -1,6 +1,7 @@
 import type { Application } from 'express';
 import setupCookieParser from './setup-cookie-parser';
 import setupCors from './setup-cors';
+import setupLogging from './setup-logging';
 import setupPassport from './setup-passport';
 import setupPostgres from './setup-postgres';
 import setupRateLimit from './setup-rate-limit';
@@ -9,6 +10,7 @@ import setupSession from './setup-session';
 // Export individual setup functions
 export {
   setupCors,
+  setupLogging,
   setupPassport,
   setupPostgres,
   setupRateLimit,
@@ -36,5 +38,7 @@ export const setupMiddleware = async (app: Application): Promise<void> => {
 
   // Setup CORS and rate limiting (can be done in parallel, but order matters for middleware)
   setupCors(app);
+  setupLogging(app);
   setupRateLimit(app);
 };
+export { errorHandler, notFoundHandler } from './error-handler';

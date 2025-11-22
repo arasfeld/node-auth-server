@@ -1,13 +1,19 @@
 import { Router } from 'express';
+import { AuthenticationError, ErrorCode } from '../error';
 
 export const userRouter = Router();
 
-userRouter.get('/me', (req, res) => {
+userRouter.get('/me', (req, res, next) => {
   const user = req.user;
 
   if (!user) {
-    return res.status(401).json({ message: 'authentication required' });
+    return next(
+      new AuthenticationError(
+        'authentication required',
+        ErrorCode.UNAUTHORIZED,
+      ),
+    );
   }
 
-  return res.status(200).json(user);
+  res.status(200).json(user);
 });
