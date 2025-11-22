@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import helmet from 'helmet';
 import * as middleware from './middleware';
 import routes from './routes';
 
@@ -7,6 +8,7 @@ async function main() {
   const app = express();
   const port = parseInt(process.env.PORT || '', 10) || 3000;
 
+  app.use(helmet());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
