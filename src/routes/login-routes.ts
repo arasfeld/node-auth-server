@@ -1,10 +1,12 @@
 import { Router } from 'express';
 import passport from 'passport';
+import { authLimiter } from '../middleware/install-rate-limit';
 
 export const loginRouter = Router();
 
 loginRouter.post(
   '/login',
+  authLimiter,
   passport.authenticate('local', {
     successReturnToOrRedirect: '/',
     failureRedirect: '/login',

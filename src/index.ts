@@ -13,6 +13,7 @@ async function main() {
   app.use(helmet());
 
   middleware.installCors(app);
+  middleware.installRateLimit(app);
   await middleware.installPostgres(app);
   await middleware.installSession(app);
   await middleware.installPassport(app);

@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import { AppError } from '../error';
 import { getPgPool } from '../middleware/install-postgres';
+import { authLimiter } from '../middleware/install-rate-limit';
 import { RegistrationService } from '../services';
 
 export const registrationRouter = Router();
 
-registrationRouter.post('/register', async (req, res) => {
+registrationRouter.post('/register', authLimiter, async (req, res) => {
   const { username, password } = req.body;
 
   if (typeof username !== 'string') {
