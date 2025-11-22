@@ -1,8 +1,8 @@
-import type { Application } from 'express'
-import passport from 'passport'
-import { Strategy as LocalStrategy } from 'passport-local'
-import { LoginService } from '../services'
-import { getPgPool } from './install-postgres'
+import type { Application } from 'express';
+import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
+import { LoginService } from '../services';
+import { getPgPool } from './install-postgres';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -13,26 +13,26 @@ declare global {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export default async (app: Application) => {
-  app.use(passport.initialize())
-  app.use(passport.session())
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   passport.serializeUser((user, done) => {
-    done(null, user.id)
-  })
+    done(null, user.id);
+  });
 
   passport.deserializeUser((id: string, done) => {
-    done(null, { id })
-  })
+    done(null, { id });
+  });
 
   passport.use(
     new LocalStrategy((username, password, done) => {
-      const pgPool = getPgPool(app)
-      const service = new LoginService(pgPool)
-      service.login(username, password)
-        .then(user => done(null, user))
-        .catch(err => done(err))
-    })
-  )
-}
+      const pgPool = getPgPool(app);
+      const service = new LoginService(pgPool);
+      service
+        .login(username, password)
+        .then((user) => done(null, user))
+        .catch((err) => done(err));
+    }),
+  );
+};
