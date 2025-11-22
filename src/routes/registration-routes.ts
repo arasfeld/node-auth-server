@@ -6,6 +6,8 @@ import { registrationSchema } from '../validation';
 
 export const registrationRouter = Router();
 
+// Note: Registration doesn't require CSRF since users don't have a session yet
+// CSRF is primarily for protecting authenticated actions
 registrationRouter.post('/register', authLimiter, async (req, res) => {
   // Validate input with zod
   const validationResult = registrationSchema.safeParse(req.body);

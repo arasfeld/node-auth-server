@@ -1,4 +1,5 @@
 import type { Application } from 'express';
+import setupCookieParser from './setup-cookie-parser';
 import setupCors from './setup-cors';
 import setupPassport from './setup-passport';
 import setupPostgres from './setup-postgres';
@@ -17,14 +18,18 @@ export {
 // Export helper functions
 export { getPgPool } from './setup-postgres';
 export { apiLimiter, authLimiter } from './setup-rate-limit';
+export { csrfProtection, generateCsrfToken } from './setup-csrf';
 
 // Export composition function that sets up all middleware in correct order
 export const setupMiddleware = async (app: Application): Promise<void> => {
   // Setup database connection first (needed by session and passport)
   await setupPostgres(app);
 
-  // Setup session (needed by passport)
+  // Setup session (needed by passport and CSRF)
   await setupSession(app);
+
+  // Setup cookie-parser after session (as per csrf-csrf docs)
+  setupCookieParser(app);
 
   // Setup passport (depends on session)
   await setupPassport(app);

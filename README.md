@@ -97,6 +97,29 @@ npx eslint . --ext .ts
 
 ## API Endpoints
 
+### CSRF Protection
+
+#### Get CSRF token
+
+```http
+GET /csrf-token
+Cookie: connect.sid=<session-id>
+```
+
+**Response:** `200 OK`
+
+```json
+{
+  "csrfToken": "token-value"
+}
+```
+
+**Note:** CSRF tokens are required for state-changing operations (POST, PUT, DELETE, PATCH).
+
+- The token is automatically set as a cookie when you call this endpoint
+- Include the token in the `X-CSRF-Token` header (preferred) or `_csrf` body field
+- The cookie will be sent automatically with requests (ensure `withCredentials` is enabled for cross-origin requests)
+
 ### Authentication
 
 #### Register a new user
@@ -125,19 +148,25 @@ Content-Type: application/json
 ```http
 POST /login
 Content-Type: application/x-www-form-urlencoded
+X-CSRF-Token: <csrf-token>
 
 username=johndoe&password=securepassword123
 ```
 
 **Response:** `302 Found` (redirects to `/` on success)
 
+**Note:** Requires CSRF token. Get token from `/csrf-token` endpoint first.
+
 #### Logout
 
 ```http
-GET /logout
+POST /logout
+X-CSRF-Token: <csrf-token>
 ```
 
 **Response:** `302 Found` (redirects to `/`)
+
+**Note:** Requires CSRF token and authentication.
 
 ### User
 
@@ -200,6 +229,7 @@ Used by `connect-pg-simple` for session storage when Redis is not configured.
 | `POSTGRES_PASSWORD` | No       | `password`         | PostgreSQL password             |
 | `REDIS_URL`         | No       | -                  | Redis connection URL (optional) |
 | `REDIS_PASSWORD`    | No       | -                  | Redis password (if required)    |
+| `CSRF_SECRET`       | **Yes**  | -                  | Secret for CSRF token signing   |
 
 ## Session Storage
 
@@ -214,7 +244,11 @@ The server supports two session storage backends:
 - ✅ Secure session management with httpOnly cookies
 - ✅ Session rotation on login
 - ✅ SameSite cookie protection (lax mode for OAuth compatibility)
-- ✅ Input validation with regex patterns
+- ✅ CSRF protection for state-changing operations
+- ✅ Rate limiting on authentication endpoints
+- ✅ Helmet security headers
+- ✅ CORS configuration
+- ✅ Input validation with Zod schemas
 - ✅ TypeScript for type safety
 
 ## Project Structure
