@@ -1,12 +1,11 @@
 import connectPgSimple from 'connect-pg-simple'
-import connectRedis from 'connect-redis'
+import { RedisStore } from 'connect-redis'
 import type { Application } from 'express'
 import session, { MemoryStore } from 'express-session'
 import { createClient } from 'redis'
 import { getPgPool } from './install-postgres'
 
 const PgStore = connectPgSimple(session)
-const RedisStore = connectRedis(session)
 
 const { SESSION_SECRET } = process.env
 if (!SESSION_SECRET) throw new Error('missing SESSION_SECRET env var')
@@ -24,7 +23,6 @@ export default async (app: Application) => {
   if (process.env.REDIS_URL) {
     const redisClient = createClient({
       url: process.env.REDIS_URL,
-      legacyMode: true,
     })
     await redisClient.connect()
     store = new RedisStore({
