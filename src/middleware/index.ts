@@ -1,5 +1,6 @@
+import installCors from './install-cors';
 import installPassport from './install-passport';
 import installPostgres from './install-postgres';
 import installSession from './install-session';
 
-export { installPassport, installPostgres, installSession };
+export { installCors, installPassport, installPostgres, installSession };

@@ -8,10 +8,11 @@ async function main() {
   const app = express();
   const port = parseInt(process.env.PORT || '', 10) || 3000;
 
-  app.use(helmet());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+  app.use(helmet());
 
+  middleware.installCors(app);
   await middleware.installPostgres(app);
   await middleware.installSession(app);
   await middleware.installPassport(app);
